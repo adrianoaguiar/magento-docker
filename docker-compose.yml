@@ -1,0 +1,49 @@
+"pen-lover":
+  image: kamolcu/mage-nginx:latest
+  container_name: webfrontend
+  links:
+    - php-fpm-docker
+    - web-mysql
+    - redis
+  ports:
+    - "88:88"
+  volumes:
+    - /var/www/html/magento
+    #- ./nginx/site:/etc/nginx/site-available
+  volumes_from:
+    - appdata
+  env_file:
+    - env
+
+"php-fpm-docker":
+  image: kamolcu/mage-php7:latest
+  container_name: pen_php-fpm
+  volumes_from:
+    - appdata
+  ports:
+    - "9999:9999"
+  links:
+    - pen-mysql
+    - redis
+
+"web-mysql":
+  image: mysql:5.6.29
+  container_name: web_mysql
+  volumes:
+    - ./db:/db
+  ports:
+    - "3307:3306"
+  env_file:
+    - env
+
+"redis":
+  image: kamolcu/mage-redis:latest
+  container_name: web_redis
+  ports:
+    - "7777:7777"
+
+appdata:
+  image: tianon/true
+  container_name: web_appdata
+  volumes:
+    - ./src:/var/www/html/magento
