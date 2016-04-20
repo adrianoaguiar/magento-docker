@@ -1,4 +1,4 @@
-"pen-lover":
+"web-front":
   image: kamolcu/mage-nginx:latest
   container_name: webfrontend
   links:
@@ -17,13 +17,13 @@
 
 "php-fpm-docker":
   image: kamolcu/mage-php7:latest
-  container_name: pen_php-fpm
+  container_name: mage-php-fpm
   volumes_from:
     - appdata
   ports:
     - "9999:9999"
   links:
-    - pen-mysql
+    - web-mysql
     - redis
 
 "web-mysql":
